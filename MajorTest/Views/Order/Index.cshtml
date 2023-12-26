@@ -1,0 +1,46 @@
+﻿@using MajorTest.Models
+
+@model IEnumerable<Order>
+
+@{
+	ViewBag.Title = "Все заявки";
+}
+
+<h2>Заявки:</h2>
+<p><a asp-action="Create">Добавить новую заявку</a></p>
+<table>
+	<tr><th>Статус заявки</th>
+		<th>Время встречи</th>
+		<th>Место встречи</th>
+		<th>Адресат</th>
+		<th>Описание груза</th>
+		<th>Масса груза</th>
+		<th>Высота груза</th>
+		<th>Ширина груза</th>
+		<th>ФИО отправителя</th>
+		<th>ФИО получателя</th>
+	</tr>
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>@item.Status</td>
+			<td>@item.MeetingTime</td>
+			<td>@item.MeetingPlace</td>
+			<td>@item.TargetAddress</td>
+			<td>@item.Item.Description</td>
+			<td>@item.Item.Weight</td>
+			<td>@item.Item.Height</td>
+			<td>@item.Item.Width</td>
+			<td>@item.ItemSender.FirstName @item.ItemSender.SecondName @item.ItemSender.LastName</td>
+			<td>@item.ItemReceiver.FirstName @item.ItemReceiver.SecondName @item.ItemReceiver.LastName</td>
+			<td>
+				<a asp-action="Edit" asp-controller="Order" asp-route-id="@item.Id">Редактировать</a>
+			</td>
+			<td>
+				<form asp-controller="Order" asp-action="Delete" method="post" asp-route-id="@item.Id">
+					<input type="submit" value="Удалить" />
+				</form>
+			</td>
+		</tr>
+	}
+</table>

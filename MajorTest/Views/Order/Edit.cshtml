@@ -1,0 +1,67 @@
+﻿@model MajorTest.Models.Order;
+
+@{
+    ViewBag.Title = "Редактирование заявки";
+}
+
+<form class="centered" asp-action="Edit" asp-controller="Order" >
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MeetingTime" class="control-label">Время встречи:</label>
+        <input type="datetime-local" asp-for="MeetingTime" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MeetingPlace" class="control-label">Место встречи:</label>
+        <input type="text" asp-for="MeetingPlace" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="TargetAddress" class="control-label">Адресат:</label>
+        <input type="text" asp-for="TargetAddress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Item.Description" class="control-label">Описание груза:</label>
+        <input type="text" asp-for="Item.Description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Item.Weight" class="control-label">Масса груза:</label>
+        <input type="text" asp-for="Item.Weight" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Item.Height" class="control-label">Высота груза:</label>
+        <input type="text" asp-for="Item.Height" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Item.Width" class="control-label">Ширина груза:</label>
+        <input type="text" asp-for="Item.Width" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemSender.FirstName" class="control-label">Имя отправителя:</label>
+        <input type="text" asp-for="ItemSender.FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemSender.SecondName" class="control-label">Отчество отправителя:</label>
+        <input type="text" asp-for="ItemSender.SecondName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemSender.LastName" class="control-label">Фамилия отправителя:</label>
+        <input type="text" asp-for="ItemSender.LastName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemReceiver.FirstName" class="control-label">Имя получателя:</label>
+        <input type="text" asp-for="ItemReceiver.FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemReceiver.SecondName" class="control-label">Отчество получателя:</label>
+        <input type="text" asp-for="ItemReceiver.SecondName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemReceiver.LastName" class="control-label">Фамилия получателя:</label>
+        <input type="text" asp-for="ItemReceiver.LastName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-outline-secondary" />
+    </div>
+</form>
