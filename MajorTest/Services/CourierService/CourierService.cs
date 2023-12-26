@@ -12,9 +12,18 @@ namespace MajorTest.Services.CourierService
             _db = db;
         }
 
-        public async Task<IEnumerable<Courier>> IndexAsync()
+        public async Task<IEnumerable<Courier>> IndexAsync(string searchString)
         {
-            return await _db.Couriers.AsNoTracking().ToListAsync();
+            IQueryable<Courier> couriers = _db.Couriers.AsNoTracking();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                couriers = couriers.Where(o => o.FirstName.Contains(searchString) ||
+                                      o.SecondName.Contains(searchString) ||
+                                      o.LastName.Contains(searchString) );
+            }
+
+            return await couriers.ToListAsync();
         }
 
         public async Task CreateAsync(Courier newCourier)

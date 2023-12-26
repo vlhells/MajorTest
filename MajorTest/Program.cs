@@ -28,7 +28,7 @@ namespace MajorTest
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute("default", "{controller=Order}/{action=Index}/{id?}");
+				endpoints.MapControllerRoute("default", "{controller=Orders}/{action=Index}/{searchString?}");
 			});
 
 			app.Run();

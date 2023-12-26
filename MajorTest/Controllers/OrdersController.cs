@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MajorTest.Controllers
 {
-	public class OrderController : Controller
+	public class OrdersController : Controller
 	{
 		private IOrderService _orderService;
 
-		public OrderController(IOrderService orderService)
+		public OrdersController(IOrderService orderService)
 		{
 			_orderService = orderService;
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(string searchString)
 		{
-			return View(await _orderService.IndexAsync());
+			return View(await _orderService.IndexAsync(searchString));
 		}
 
 		[HttpGet]

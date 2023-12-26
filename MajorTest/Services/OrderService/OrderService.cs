@@ -12,19 +12,26 @@ namespace MajorTest.Services.OrderService
             _db = db;
         }
 
-        public async Task<IEnumerable<Order>> IndexAsync()
+        public async Task<IEnumerable<Order>> IndexAsync(string searchString)
         {
-            var orders = _db.Orders.AsNoTracking()
+            IQueryable<Order> orders = _db.Orders.AsNoTracking()
                          .Include(o => o.Item)
                          .Include(o => o.ItemSender)
                          .Include(o => o.Courier)
                          .Include(o => o.ItemReceiver);
 
-            //if (!String.IsNullOrEmpty(searchString))
-            //{
-            //    orders = orders.Where(o => o.Item.Description.Contains(searchString) ||
-            //                          o.Item.Width.ToString().Contains(searchString) );
-            //}
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                orders = orders.Where(o => o.ItemSender.FirstName.Contains(searchString) ||
+                                      o.ItemSender.SecondName.Contains(searchString) ||
+                                      o.ItemSender.LastName.Contains(searchString) ||
+                                      o.Courier.FirstName.Contains(searchString) ||
+                                      o.Courier.SecondName.Contains(searchString) ||
+                                      o.Courier.LastName.Contains(searchString) ||
+                                      o.ItemReceiver.FirstName.Contains(searchString) ||
+                                      o.ItemReceiver.SecondName.Contains(searchString) ||
+                                      o.ItemReceiver.LastName.Contains(searchString));
+            }
 
             return await orders.ToListAsync();
         }

@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MajorTest.Controllers
 {
-    public class CourierController : Controller
+    public class CouriersController : Controller
     {
         private ICourierService _courierService;
 
-        public CourierController(ICourierService courierService)
+        public CouriersController(ICourierService courierService)
         {
             _courierService = courierService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _courierService.IndexAsync());
+            return View(await _courierService.IndexAsync(searchString));
         }
 
         [HttpGet]

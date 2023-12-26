@@ -4,7 +4,7 @@ namespace MajorTest.Services.OrderService
 {
     public interface IOrderService
     {
-		public Task<IEnumerable<Order>> IndexAsync();
+		public Task<IEnumerable<Order>> IndexAsync(string searchString);
 		public Task CreateAsync(Order newOrder);
         public Task EditAsync(Order updatedOrder);
         public Task<Order> GetOrderByIdAsync(int id);
