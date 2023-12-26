@@ -1,0 +1,70 @@
+html {
+    background-color: aliceblue;
+    font-family: Andale Mono, monospace;
+}
+
+#subPageMargin{
+    margin-top: 25px;
+}
+
+#addNew{
+    text-align: right;
+}
+
+input{
+    margin-top: 3.5px;
+}
+
+a:visited{
+    color: cadetblue;
+}
+
+a{
+    text-decoration: none;
+    color: dodgerblue;
+}
+
+h2 {
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    font-size: 50px;
+    padding-top: 25px;
+    margin-bottom: -25px;
+    text-align: center;
+    color: white;
+    -webkit-text-stroke: 1px lightblue;
+}
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer {
+    background-color: lightsteelblue;
+    color: honeydew;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 87.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#header {
+    letter-spacing: 1px;
+    color: lightcyan;
+    font-size: 25px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.75;
+}

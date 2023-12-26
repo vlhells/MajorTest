@@ -2,17 +2,22 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <header>
+    <header id="header">
         <a href="/Order/Index">Заявки</a>
-        <span> | </span>
+        <span id="stickBetween"> | </span>
         <a href="/Courier/Index">Курьеры</a>
     </header>
+    <h2>@ViewBag.Title</h2>
     <div>
         @RenderBody()
     </div>
+    <footer>
+        2023.
+    </footer>
 </body>
 </html>
