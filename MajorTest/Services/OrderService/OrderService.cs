@@ -30,7 +30,10 @@ namespace MajorTest.Services.OrderService
                                       o.Courier.LastName.Contains(searchString) ||
                                       o.ItemReceiver.FirstName.Contains(searchString) ||
                                       o.ItemReceiver.SecondName.Contains(searchString) ||
-                                      o.ItemReceiver.LastName.Contains(searchString));
+                                      o.ItemReceiver.LastName.Contains(searchString) ||
+									  o.ItemSender.PhoneNumber.Contains(searchString) ||
+									  o.Courier.PhoneNumber.Contains(searchString) ||
+									  o.ItemReceiver.PhoneNumber.Contains(searchString) );
             }
 
             return await orders.ToListAsync();
