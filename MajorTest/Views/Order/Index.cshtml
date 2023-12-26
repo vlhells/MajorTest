@@ -18,7 +18,9 @@
 		<th>Высота груза</th>
 		<th>Ширина груза</th>
 		<th>ФИО отправителя</th>
+		<th>Контактный номер отправителя</th>
 		<th>ФИО получателя</th>
+		<th>Контактный номер получателя</th>
 	</tr>
 	@foreach (var item in Model)
 	{
@@ -32,7 +34,9 @@
 			<td>@item.Item.Height</td>
 			<td>@item.Item.Width</td>
 			<td>@item.ItemSender.FirstName @item.ItemSender.SecondName @item.ItemSender.LastName</td>
+			<td>@item.ItemSender.PhoneNumber</td>
 			<td>@item.ItemReceiver.FirstName @item.ItemReceiver.SecondName @item.ItemReceiver.LastName</td>
+			<td>@item.ItemReceiver.PhoneNumber</td>
 			<td>
 				<a asp-action="Edit" asp-controller="Order" asp-route-id="@item.Id">Редактировать</a>
 			</td>

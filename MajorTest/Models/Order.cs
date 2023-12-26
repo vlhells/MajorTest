@@ -7,10 +7,16 @@ namespace MajorTest.Models
 		[Key]
 		public int Id { get; set; }
 
+		[Required]
 		public Item Item { get; set; } = null!;
-		public ItemSender ItemSender { get; set; } = null!;
+
+        [Required]
+        public ItemSender ItemSender { get; set; } = null!;
+
 		public Courier? Courier { get; set; }
-		public ItemReceiver ItemReceiver { get; set; } = null!;
+
+        [Required]
+        public ItemReceiver ItemReceiver { get; set; } = null!;
 
 		public string Status { get; set; } = "Новая"; // TODO: think.
 

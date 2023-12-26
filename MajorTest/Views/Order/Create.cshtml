@@ -49,6 +49,10 @@
         <input type="text" asp-for="ItemSender.LastName" class="form-control" />
     </div>
     <div class="form-group">
+        <label asp-for="ItemSender.PhoneNumber" class="control-label">Контактный номер отправителя:</label>
+        <input type="tel" asp-for="ItemSender.PhoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="ItemReceiver.FirstName" class="control-label">Имя получателя:</label>
         <input type="text" asp-for="ItemReceiver.FirstName" class="form-control" />
     </div>
@@ -59,6 +63,10 @@
     <div class="form-group">
         <label asp-for="ItemReceiver.LastName" class="control-label">Фамилия получателя:</label>
         <input type="text" asp-for="ItemReceiver.LastName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemReceiver.PhoneNumber" class="control-label">Контактный номер получателя:</label>
+        <input type="tel" asp-for="ItemReceiver.PhoneNumber" class="form-control" />
     </div>
     <div class="form-group">
         <input type="submit" value="Добавить" class="btn btn-outline-secondary" />

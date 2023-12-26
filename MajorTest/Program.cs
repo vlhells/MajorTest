@@ -1,4 +1,5 @@
 using MajorTest.Models;
+using MajorTest.Services.CourierService;
 using MajorTest.Services.OrderService;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace MajorTest
 			builder.Services.AddDbContext<MajorContext>(options => options.UseNpgsql(connection));
 			builder.Services.AddMvc();
 			builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<ICourierService, CourierService>();
 
             var app = builder.Build();
 
