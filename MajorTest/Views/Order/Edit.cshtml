@@ -26,16 +26,20 @@
         <input type="text" asp-for="Item.Description" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Item.Weight" class="control-label">Масса груза:</label>
-        <input type="text" asp-for="Item.Weight" class="form-control" />
+        <label asp-for="Item.Weight" class="control-label">Масса груза (кг):</label>
+        <input type="number" asp-for="Item.Weight" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Item.Height" class="control-label">Высота груза:</label>
-        <input type="text" asp-for="Item.Height" class="form-control" />
+        <label asp-for="Item.Length" class="control-label">Длина груза (см):</label>
+        <input type="number" asp-for="Item.Length" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Item.Width" class="control-label">Ширина груза:</label>
-        <input type="text" asp-for="Item.Width" class="form-control" />
+        <label asp-for="Item.Width" class="control-label">Ширина груза (см):</label>
+        <input type="number" asp-for="Item.Width" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Item.Height" class="control-label">Высота груза (см):</label>
+        <input type="number" asp-for="Item.Height" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="ItemSender.FirstName" class="control-label">Имя отправителя:</label>

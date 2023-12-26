@@ -14,19 +14,20 @@ namespace MajorTest.Services.OrderService
 
         public async Task<IEnumerable<Order>> IndexAsync()
         {
-			//if (_db.Orders.AsNoTracking().Count() != 0)
-			{
-				return await _db.Orders.AsNoTracking().
-					                    Include(o => o.Item).
-										Include(o => o.ItemSender).
-										Include(o => o.Courier).
-										Include(o => o.ItemReceiver).
-										
-						ToListAsync();
-			}
+            var orders = _db.Orders.AsNoTracking()
+                         .Include(o => o.Item)
+                         .Include(o => o.ItemSender)
+                         .Include(o => o.Courier)
+                         .Include(o => o.ItemReceiver);
 
-			return null;
-		}
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    orders = orders.Where(o => o.Item.Description.Contains(searchString) ||
+            //                          o.Item.Width.ToString().Contains(searchString) );
+            //}
+
+            return await orders.ToListAsync();
+        }
 
         public async Task CreateAsync(Order newOrder)
         {

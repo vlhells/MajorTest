@@ -14,9 +14,10 @@
 		<th>Место встречи</th>
 		<th>Адресат</th>
 		<th>Описание груза</th>
-		<th>Масса груза</th>
-		<th>Высота груза</th>
-		<th>Ширина груза</th>
+		<th>Масса груза (кг)</th>
+		<th>Длина груза (см)</th>
+		<th>Ширина груза (см)</th>
+		<th>Высота груза (см)</th>
 		<th>ФИО отправителя</th>
 		<th>Контактный номер отправителя</th>
 		<th>ФИО получателя</th>
@@ -31,8 +32,9 @@
 			<td>@item.TargetAddress</td>
 			<td>@item.Item.Description</td>
 			<td>@item.Item.Weight</td>
-			<td>@item.Item.Height</td>
+			<td>@item.Item.Length</td>
 			<td>@item.Item.Width</td>
+			<td>@item.Item.Height</td>
 			<td>@item.ItemSender.FirstName @item.ItemSender.SecondName @item.ItemSender.LastName</td>
 			<td>@item.ItemSender.PhoneNumber</td>
 			<td>@item.ItemReceiver.FirstName @item.ItemReceiver.SecondName @item.ItemReceiver.LastName</td>

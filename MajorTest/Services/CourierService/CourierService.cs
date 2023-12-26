@@ -14,12 +14,7 @@ namespace MajorTest.Services.CourierService
 
         public async Task<IEnumerable<Courier>> IndexAsync()
         {
-            //if (_db.Orders.AsNoTracking().Count() != 0)
-            {
-                return await _db.Couriers.AsNoTracking().ToListAsync();
-            }
-
-            return null;
+            return await _db.Couriers.AsNoTracking().ToListAsync();
         }
 
         public async Task CreateAsync(Courier newCourier)
