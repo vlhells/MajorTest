@@ -1,8 +1,8 @@
 ﻿using MajorTest.Models;
 
-namespace MajorTest.Services.CourierService
+namespace MajorTest.Services.CouriersService
 {
-    public interface ICourierService
+    public interface ICouriersService
     {
         public Task<IEnumerable<Courier>> IndexAsync(string searchString);
         public Task CreateAsync(Courier newCourier);

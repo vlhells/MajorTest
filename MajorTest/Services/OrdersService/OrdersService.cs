@@ -3,18 +3,18 @@ using MajorTest.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace MajorTest.Services.OrderService
+namespace MajorTest.Services.OrdersService
 {
-    public class OrderService: IOrderService
+    public class OrdersService: IOrdersService
     {
         private MajorContext _db;
 
-        public OrderService(MajorContext db)
+        public OrdersService(MajorContext db)
         {
             _db = db;
         }
 
-        public async Task<IEnumerable<Order>> IndexAsync(string searchString)
+        public async Task<IEnumerable<Order>> IndexAsync(string? searchString)
         {
             IQueryable<Order> orders = _db.Orders.AsNoTracking()
                          .Include(o => o.Item)

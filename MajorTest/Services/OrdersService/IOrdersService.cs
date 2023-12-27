@@ -1,11 +1,11 @@
 ﻿using MajorTest.Dto;
 using MajorTest.Models;
 
-namespace MajorTest.Services.OrderService
+namespace MajorTest.Services.OrdersService
 {
-    public interface IOrderService
+    public interface IOrdersService
     {
-		public Task<IEnumerable<Order>> IndexAsync(string searchString);
+		public Task<IEnumerable<Order>> IndexAsync(string? searchString);
 		public Task CreateAsync(Order newOrder);
         public Task EditAsync(Order updatedOrder);
         public Task<Order> GetOrderByIdAsync(int id);
