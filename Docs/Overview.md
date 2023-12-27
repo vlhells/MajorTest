@@ -1,5 +1,6 @@
 Запустив приложение, Вы попадете на страницу /Orders/Index.  
 На ней представлены все заявки, которые есть в базе.  
+    
 ![alt text](overviewScreens/OrdersIndexAll.PNG "/Orders/Index preview")  
     
 На ней же можно найти заказ по ключевому слову (проверяются поля ФИО и телефонов):  
@@ -7,7 +8,7 @@
     
 Также на странице /Orders/Index можно создать новую заявку:  
 ![alt text](overviewScreens/OrderCreate.PNG "/Orders/Create preview")  
-В случае ввода некорректных (пустых данных) будет BadRequest)  
+В случае ввода некорректных (пустых) данных будет BadRequest)  
     
 У заявки можно изменить статус:  
 ![alt text](overviewScreens/OrderChangeState.PNG "/Orders/ChangeState preview")  
