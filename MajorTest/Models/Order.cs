@@ -19,7 +19,7 @@ namespace MajorTest.Models
         [Required]
         public ItemReceiver ItemReceiver { get; set; } = null!;
 
-		public string Status { get; set; } = OrderStates["new"];
+		public string State { get; set; } = OrderStates["new"];
 
 		public DateTime MeetingTime { get; set; }
 		public string MeetingPlace { get; set; } = null!;
@@ -31,7 +31,8 @@ namespace MajorTest.Models
 		{
 			{ "new", "Новая"},
 			{ "inProcess", "Передана на выполнение"},
-			{ "cancelled", "Отменена"}
+			{ "cancelled", "Отменена"},
+			{ "done", "Выполнена"}
 		};
 	}
 }

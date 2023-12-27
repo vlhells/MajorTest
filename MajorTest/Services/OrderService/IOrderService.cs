@@ -12,6 +12,8 @@ namespace MajorTest.Services.OrderService
         public Task<bool> DeleteAsync(int id);
         public Task<bool> SetCourier(int orderId, int courierId);
         public Task<SelectCourierDto> SelectCourier(int orderId);
-        public Task<bool> CancelOrder(int orderId, string cancellationComment);
-	}
+        public Task<bool> ChangeState(int orderId, string newState, string? cancellationComment);
+        public Task<ChangeOrderStateDto> GetOrderState(int orderId);
+
+    }
 }

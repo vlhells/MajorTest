@@ -68,7 +68,7 @@ namespace MajorTest.Controllers
 		public async Task<IActionResult> Edit(int id)
 		{
             var order = await _orderService.GetOrderByIdAsync(id);
-            if (order != null && order.Status == "Новая")
+            if (order != null && order.State == Order.OrderStates["new"])
             {
                 return View(order);
             }
@@ -99,9 +99,9 @@ namespace MajorTest.Controllers
         }
 
 		[HttpGet]
-		public async Task<IActionResult> CancelOrder(int id)
+		public async Task<IActionResult> ChangeState(int id)
 		{
-			var order = await _orderService.GetOrderByIdAsync(id);
+			var order = await _orderService.GetOrderState(id);
 			if (order != null)
 			{
 				return View(order);
@@ -111,19 +111,19 @@ namespace MajorTest.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CancelOrder(Order orderToCancel)
+		public async Task<IActionResult> ChangeState(ChangeOrderStateDto updatedOrder)
 		{
-			if (!String.IsNullOrEmpty(orderToCancel.CancellationComment))
+			if (ModelState.IsValid)
 			{
-				var result = await _orderService.CancelOrder(orderToCancel.Id, 
-											orderToCancel.CancellationComment);
+				var result = await _orderService.ChangeState(updatedOrder.thisOrderId, 
+					updatedOrder.selectedState, updatedOrder.cancellationComment);
 				if (result)
 				{
 					return RedirectToAction("Index");
 				}
 			}
 
-			return BadRequest();
+            return BadRequest();
 		}
 
         [HttpGet]

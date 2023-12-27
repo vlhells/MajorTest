@@ -17,8 +17,16 @@
 
     <div class="form-group">
         <label class="control-label"><b>Курьер:</b></label>
-        <span>@Model.Courier.LastName @Model.Courier.FirstName @Model.Courier.SecondName, 
-            @Model.Courier.PhoneNumber</span>
+        @if (Model.Courier != null)
+        {
+            <span>@Model.Courier.LastName @Model.Courier.FirstName @Model.Courier.SecondName, 
+                @Model.Courier.PhoneNumber
+            </span>
+        }
+        else
+        {
+            <span>курьер назначен не был.</span>
+        }
     </div>
 
     <div class="form-group">

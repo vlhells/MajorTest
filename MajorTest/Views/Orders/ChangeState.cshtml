@@ -1,0 +1,28 @@
+﻿@model MajorTest.Dto.ChangeOrderStateDto;
+
+<script type="text/javascript" charset="utf-8" src="~/js/checkStatusScript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+@{
+    ViewBag.Title = "Изменение статуса заявки";
+}
+
+<form class="centered" id="subPageMargin" asp-action="ChangeState" asp-controller="Orders">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="thisOrderId" />
+    </div>
+    <p class="form-group">
+        <label>Статус заказа: </label>
+        <select id="states" asp-for="selectedState" asp-items="Model.orderStates" onchange="checkState()">
+            <option value="">Выберите статус заказа</option>
+        </select>
+    </p>
+    <div class="form-group" id="comment" style="display: none;">
+        <label asp-for="cancellationComment" class="control-label">Причина отмены:</label>
+        <input type="text" asp-for="cancellationComment" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-outline-secondary" />
+    </div>
+</form>

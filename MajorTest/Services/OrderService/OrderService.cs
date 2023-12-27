@@ -105,7 +105,7 @@ namespace MajorTest.Services.OrderService
             if (targetOrder != null && targetCourier != null)
             {
                 targetOrder.Courier = targetCourier;
-                targetOrder.Status = Order.OrderStates["inProcess"];
+                targetOrder.State = Order.OrderStates["inProcess"];
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -113,13 +113,39 @@ namespace MajorTest.Services.OrderService
                 return false;
 		}
 
-        public async Task<bool> CancelOrder(int orderId, string cancellationComment)
+        public async Task<ChangeOrderStateDto> GetOrderState(int orderId)
+        {
+            var thisOrder = await _db.Orders.Include(o => o.Courier).FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (thisOrder != null)
+            {
+                var statesForSelectList = Order.OrderStates.
+                    Where(o => o.Key != "done" && o.Key != "inProcess")
+                    .Select(o => new
+                {
+                    StateKey = o.Key,
+                    StateValue = o.Value
+                }).ToList();
+
+                return new ChangeOrderStateDto
+                {
+                    orderStates = new SelectList(statesForSelectList,
+                    "StateKey", "StateValue"),
+                    thisOrderId = thisOrder.Id
+                };
+            }
+
+            return null;
+        }
+
+        public async Task<bool> ChangeState(int orderId, string newState, string? cancellationComment)
         {
 			var order = await _db.Orders.FindAsync(orderId);
 			if (order != null)
 			{
-				order.Status = Order.OrderStates["cancelled"];
-				order.CancellationComment = cancellationComment;
+				order.State = Order.OrderStates[newState];
+                if (order.State == Order.OrderStates["cancelled"])
+				    order.CancellationComment = cancellationComment;
 				await _db.SaveChangesAsync();
 				return true;
 			}

@@ -34,12 +34,12 @@
 	{
 		<tr>
 			<td>
-				@item.Status
+				@item.State
 
-				@if (item.Status == Order.OrderStates["new"] || 
-					 item.Status == Order.OrderStates["inProcess"])
+				@if (item.State == Order.OrderStates["new"] ||
+						item.State == Order.OrderStates["inProcess"])
 				{
-					<a asp-action="CancelOrder" asp-route-id="@item.Id" method="get">(Отменить заявку)</a>
+					<a asp-action="ChangeState" asp-route-id="@item.Id" method="get">(Изменить)</a>
 				}
 				else
 				{
@@ -60,15 +60,24 @@
 			<td>@item.ItemReceiver.FirstName @item.ItemReceiver.SecondName @item.ItemReceiver.LastName</td>
 			<td>@item.ItemReceiver.PhoneNumber</td>
 
-			@if (item.Status == Order.OrderStates["new"])
+			@if (item.Courier == null)
 			{
-				<td>
-					<a asp-action="SetCourier" asp-controller="Orders" asp-route-orderId="@item.Id">Выбрать курьера</a>
-				</td>
+				if (item.State != Order.OrderStates["cancelled"])
+				{
+					<td>
+						<a asp-action="SetCourier" asp-controller="Orders" asp-route-orderId="@item.Id">Выбрать курьера</a>
+					</td>
 
-				<td>
-					<a asp-action="Edit" asp-controller="Orders" asp-route-id="@item.Id">Редактировать детали</a>
-				</td>
+					<td>
+						<a asp-action="Edit" asp-controller="Orders" asp-route-id="@item.Id">Редактировать детали</a>
+					</td>
+				}
+				else
+				{
+					<td>
+						@item.State
+					</td>
+				}
 			}
 			else
 			{
