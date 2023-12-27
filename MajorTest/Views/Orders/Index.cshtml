@@ -28,11 +28,25 @@
 		<th>Контактный номер отправителя</th>
 		<th>ФИО получателя</th>
 		<th>Контактный номер получателя</th>
+		<th>Курьер</th>
 	</tr>
 	@foreach (var item in Model)
 	{
 		<tr>
-			<td>@item.Status</td>
+			<td>
+				@item.Status
+
+				@if (item.Status == Order.OrderStates["new"] || 
+					 item.Status == Order.OrderStates["inProcess"])
+				{
+					<a asp-action="CancelOrder" asp-route-id="@item.Id" method="get">(Отменить заявку)</a>
+				}
+				else
+				{
+					<br />
+					<a asp-action="CancellationReason" asp-route-id="@item.Id">Посмотреть причину</a>
+				}
+			</td>
 			<td>@item.MeetingTime</td>
 			<td>@item.MeetingPlace</td>
 			<td>@item.TargetAddress</td>
@@ -45,9 +59,25 @@
 			<td>@item.ItemSender.PhoneNumber</td>
 			<td>@item.ItemReceiver.FirstName @item.ItemReceiver.SecondName @item.ItemReceiver.LastName</td>
 			<td>@item.ItemReceiver.PhoneNumber</td>
-			<td>
-				<a asp-action="Edit" asp-controller="Orders" asp-route-id="@item.Id">Редактировать</a>
-			</td>
+
+			@if (item.Status == Order.OrderStates["new"])
+			{
+				<td>
+					<a asp-action="SetCourier" asp-controller="Orders" asp-route-orderId="@item.Id">Выбрать курьера</a>
+				</td>
+
+				<td>
+					<a asp-action="Edit" asp-controller="Orders" asp-route-id="@item.Id">Редактировать детали</a>
+				</td>
+			}
+			else
+			{
+				<td>
+					<span>@item.Courier.LastName @(item.Courier.FirstName.Substring(0, 1) + '.')
+						@(item.Courier.SecondName.Substring(0, 1) + '.') <br> (УИД: @item.Courier.Id)
+					</span>
+				</td>
+			}
 			<td>
 				<form asp-controller="Orders" asp-action="Delete" method="post" asp-route-id="@item.Id">
 					<input type="submit" value="Удалить" />

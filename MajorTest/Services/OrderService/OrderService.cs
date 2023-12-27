@@ -1,4 +1,6 @@
-﻿using MajorTest.Models;
+﻿using MajorTest.Dto;
+using MajorTest.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace MajorTest.Services.OrderService
@@ -71,6 +73,58 @@ namespace MajorTest.Services.OrderService
             }
 
             return false;
+        }
+
+        public async Task<SelectCourierDto> SelectCourier(int orderId)
+        {
+            var allCouriers = _db.Couriers;
+            var thisOrder = await _db.Orders.Include(o => o.Courier).FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (thisOrder != null && thisOrder.Courier == null && allCouriers != null)
+            {
+                var couriersForSelectList = await allCouriers.Select(c => new
+                {
+                    c.Id,
+                    DisplayName = $"{c.FirstName} {c.SecondName} {c.LastName}"
+                }).ToListAsync();
+
+                return new SelectCourierDto { allCouriers = new SelectList(couriersForSelectList, 
+                    "Id", "DisplayName"), thisOrderId = thisOrder.Id };
+            }
+
+            return null;
+        }
+
+        public async Task<bool> SetCourier(int orderId, int courierId)
+        {
+			var targetOrder = await _db.Orders.Include(o => o.Courier).
+                                    FirstOrDefaultAsync(o => o.Id == orderId);
+
+            var targetCourier = await _db.Couriers.FindAsync(courierId);
+
+            if (targetOrder != null && targetCourier != null)
+            {
+                targetOrder.Courier = targetCourier;
+                targetOrder.Status = Order.OrderStates["inProcess"];
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            else
+                return false;
+		}
+
+        public async Task<bool> CancelOrder(int orderId, string cancellationComment)
+        {
+			var order = await _db.Orders.FindAsync(orderId);
+			if (order != null)
+			{
+				order.Status = Order.OrderStates["cancelled"];
+				order.CancellationComment = cancellationComment;
+				await _db.SaveChangesAsync();
+				return true;
+			}
+
+			return false;
         }
     }
 }

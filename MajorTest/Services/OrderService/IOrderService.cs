@@ -1,4 +1,5 @@
-﻿using MajorTest.Models;
+﻿using MajorTest.Dto;
+using MajorTest.Models;
 
 namespace MajorTest.Services.OrderService
 {
@@ -9,6 +10,8 @@ namespace MajorTest.Services.OrderService
         public Task EditAsync(Order updatedOrder);
         public Task<Order> GetOrderByIdAsync(int id);
         public Task<bool> DeleteAsync(int id);
-
-    }
+        public Task<bool> SetCourier(int orderId, int courierId);
+        public Task<SelectCourierDto> SelectCourier(int orderId);
+        public Task<bool> CancelOrder(int orderId, string cancellationComment);
+	}
 }

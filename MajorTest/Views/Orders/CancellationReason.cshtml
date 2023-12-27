@@ -1,0 +1,45 @@
+﻿@model MajorTest.Models.Order;
+
+@{
+    ViewBag.Title = "Просмотр причины отмены заявки";
+}
+
+<form class="centered" id="subPageMargin">
+    <div class="form-group">
+        <label asp-for="CancellationComment" class="control-label"><b>Причина отмены:</b></label>
+        <span>@Model.CancellationComment</span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label"><b>Встреча с курьером:</b></label>
+        <span>@Model.MeetingPlace, @Model.MeetingTime</span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label"><b>Курьер:</b></label>
+        <span>@Model.Courier.LastName @Model.Courier.FirstName @Model.Courier.SecondName, 
+            @Model.Courier.PhoneNumber</span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label"><b>Адресат:</b></label>
+        <span>@Model.TargetAddress, @Model.ItemReceiver.LastName @Model.ItemReceiver.FirstName
+            @Model.ItemReceiver.SecondName, @Model.ItemReceiver.PhoneNumber
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label"><b>Отправитель:</b></label>
+        <span>@Model.ItemSender.LastName @Model.ItemSender.FirstName @Model.ItemSender.SecondName, 
+            @Model.ItemSender.PhoneNumber
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label"><b>Груз:</b></label>
+        <span>
+            масса (кг): @Model.Item.Weight. Длина, ширина, высота в см: @Model.Item.Length x @Model.Item.Width x
+            @Model.Item.Height
+        </span>
+    </div>
+</form>
