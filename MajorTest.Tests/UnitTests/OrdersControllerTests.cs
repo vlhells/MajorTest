@@ -2,6 +2,7 @@ using MajorTest.Controllers;
 using MajorTest.Dto;
 using MajorTest.Models;
 using MajorTest.Services.OrdersService;
+using MajorTest.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NSubstitute;
@@ -15,7 +16,7 @@ namespace UnitTests
 		{
 			// Arrange:
 			var ordersService = Substitute.For<IOrdersService>();
-			ordersService.IndexAsync(String.Empty).Returns(ImitateOrdersDataset());
+			ordersService.IndexAsync(String.Empty, 1).Returns(ImitateOrdersDataset());
 			var controller = new OrdersController(ordersService);
 
 			// Act:
@@ -23,78 +24,66 @@ namespace UnitTests
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
-			var model = Assert.IsAssignableFrom<IEnumerable<Order>>(isViewResult.Model);
-			Assert.Equal(ImitateOrdersDataset().Count(), model.Count());
+			var model = Assert.IsAssignableFrom<IndexOrderViewModel>(isViewResult.Model);
+			Assert.Equal(ImitateOrdersDataset().Orders.Count(), model.Orders.Count());
 		}
-		private List<Order> ImitateOrdersDataset()
+		private IndexOrderViewModel ImitateOrdersDataset()
 		{
 			var orders = new List<Order>
 			{
-				new Order{ItemSender = new ItemSender{ FirstName = "Александр",
-													   SecondName = "Борисович",
-													   LastName = "Зубенко",
+				new Order{ItemSender = new ItemSender{ FirstName = "Alexander",
+													   SecondName = "D",
+													   LastName = "Brown",
 													   PhoneNumber = "+79991231519"},
-						  Courier = new Courier{ FirstName = "а",
-												 SecondName = "б",
-												 LastName = "в",
+						  Courier = new Courier{ FirstName = "пїЅ",
+												 SecondName = "пїЅ",
+												 LastName = "пїЅ",
 											     PhoneNumber = "+79991231519"},
-						  ItemReceiver = new ItemReceiver{ FirstName = "а",
-												 SecondName = "б",
-												 LastName = "в",
+						  ItemReceiver = new ItemReceiver{ FirstName = "пїЅ",
+												 SecondName = "пїЅ",
+												 LastName = "пїЅ",
 												 PhoneNumber = "+79991231519"}},
 
-				new Order{Courier = new Courier{ FirstName = "Борис",
-											     SecondName = "Миронович",
-												 LastName = "Станиславов",
+				new Order{Courier = new Courier{ FirstName = "Dmitry",
+											     SecondName = "M",
+												 LastName = "Smith",
 										         PhoneNumber = "+79991231519"},
-						  ItemSender = new ItemSender{ FirstName = "а",
-												 SecondName = "б",
-												 LastName = "в", 
+						  ItemSender = new ItemSender{ FirstName = "пїЅ",
+												 SecondName = "пїЅ",
+												 LastName = "пїЅ", 
 												 PhoneNumber = "+79991231519"},
-						  ItemReceiver = new ItemReceiver{ FirstName = "а",
-												 SecondName = "б",
-												 LastName = "в",
+						  ItemReceiver = new ItemReceiver{ FirstName = "пїЅ",
+												 SecondName = "пїЅ",
+												 LastName = "пїЅ",
 												 PhoneNumber = "+79991231519"}
 				},
 
 				new Order{ItemReceiver = new ItemReceiver{
-													   FirstName = "Дмитрий",
-													   SecondName = "Дамирович",
-													   LastName = "КПСС",
+													   FirstName = "Miroslava",
+													   SecondName = "John",
+													   LastName = "White",
 													   PhoneNumber = "+79991231519"},
-						 ItemSender = new ItemSender{ FirstName = "а",
-												 SecondName = "б",
-												 LastName = "в",
+						 ItemSender = new ItemSender{ FirstName = "пїЅ",
+												 SecondName = "пїЅ",
+												 LastName = "пїЅ",
 												 PhoneNumber = "+79991231519"},
-						 Courier = new Courier{ FirstName = "а",
-												 SecondName = "б",
-												 LastName = "в",
+						 Courier = new Courier{ FirstName = "пїЅ",
+												 SecondName = "пїЅ",
+												 LastName = "пїЅ",
 												 PhoneNumber = "+79991231519"}}
 			};
 
-			return orders;
+			return new IndexOrderViewModel { Orders = orders, PageViewModel = new PageViewModel(1, 2, 3)};
 		}
 
 		[Fact]
 		public async Task IndexReturnsFilteredData()
 		{
 			// Arrange:
-			string searchString = "Александр";
+			string searchString = "Dmitry";
 			var ordersService = Substitute.For<IOrdersService>();
-			ordersService.IndexAsync(searchString).Returns
-				(ImitateOrdersDataset().Where(o => o.ItemSender.FirstName.Contains(searchString) ||
-									  o.ItemSender.SecondName.Contains(searchString) ||
-									  o.ItemSender.LastName.Contains(searchString) ||
-									  o.Courier.FirstName.Contains(searchString) ||
-									  o.Courier.SecondName.Contains(searchString) ||
-									  o.Courier.LastName.Contains(searchString) ||
-									  o.ItemReceiver.FirstName.Contains(searchString) ||
-									  o.ItemReceiver.SecondName.Contains(searchString) ||
-									  o.ItemReceiver.LastName.Contains(searchString) ||
-									  o.ItemSender.PhoneNumber.Contains(searchString) ||
-									  o.Courier.PhoneNumber.Contains(searchString) ||
-									  o.ItemReceiver.PhoneNumber.Contains(searchString))
-				.ToList());
+			ordersService.IndexAsync(searchString, 1).Returns
+				(ImitateFiltredDataset(searchString));
 			var controller = new OrdersController(ordersService);
 
 			// Act:
@@ -102,9 +91,27 @@ namespace UnitTests
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
-			var model = Assert.IsAssignableFrom<IEnumerable<Order>>(isViewResult.Model);
-			Assert.True(ImitateOrdersDataset().Count() > model.Count());
+			var model = Assert.IsAssignableFrom<IndexOrderViewModel>(isViewResult.Model);
+			Assert.True(ImitateOrdersDataset().Orders.Count() > model.Orders.Count());
 		}
+		private IndexOrderViewModel ImitateFiltredDataset(string searchString)
+		{
+            var orders = ImitateOrdersDataset().Orders.Where(o => o.ItemSender.FirstName.Contains(searchString) ||
+                                      o.ItemSender.SecondName.Contains(searchString) ||
+                                      o.ItemSender.LastName.Contains(searchString) ||
+                                      o.Courier.FirstName.Contains(searchString) ||
+                                      o.Courier.SecondName.Contains(searchString) ||
+                                      o.Courier.LastName.Contains(searchString) ||
+                                      o.ItemReceiver.FirstName.Contains(searchString) ||
+                                      o.ItemReceiver.SecondName.Contains(searchString) ||
+                                      o.ItemReceiver.LastName.Contains(searchString) ||
+                                      o.ItemSender.PhoneNumber.Contains(searchString) ||
+                                      o.Courier.PhoneNumber.Contains(searchString) ||
+                                      o.ItemReceiver.PhoneNumber.Contains(searchString))
+                .ToList();
+
+            return new IndexOrderViewModel { Orders = orders, PageViewModel = new PageViewModel(1, 2, 3) };
+        }
 
 		[Fact]
 		public async Task GETSetCourierReturnsSelectCourierDto()
@@ -131,12 +138,12 @@ namespace UnitTests
 		{
 			var couriers = new List<Courier>
 			{
-				new Courier{ FirstName = "Андрей", SecondName = "Игоревич",
-							 LastName = "Федорович", PhoneNumber = "+79991231515"},
-				new Courier{ FirstName = "Мирон", SecondName = "Янович",
-							 LastName = "Федоров", PhoneNumber = "+79991231516"},
-				new Courier{ FirstName = "а", SecondName = "б",
-							 LastName = "в", PhoneNumber = "+79991231519"},
+				new Courier{ FirstName = "пїЅпїЅпїЅпїЅпїЅпїЅ", SecondName = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+							 LastName = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", PhoneNumber = "+79991231515"},
+				new Courier{ FirstName = "пїЅпїЅпїЅпїЅпїЅ", SecondName = "пїЅпїЅпїЅпїЅпїЅпїЅ",
+							 LastName = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", PhoneNumber = "+79991231516"},
+				new Courier{ FirstName = "пїЅ", SecondName = "пїЅ",
+							 LastName = "пїЅ", PhoneNumber = "+79991231519"},
 			};
 
 			return new SelectList(couriers);

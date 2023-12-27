@@ -1,4 +1,5 @@
-﻿using MajorTest.Dto;
+﻿using System;
+using MajorTest.Dto;
 using MajorTest.Models;
 using MajorTest.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -62,6 +63,7 @@ namespace MajorTest.Services.OrdersService
 
         public async Task EditAsync(Order updatedOrder)
         {
+            _db.Entry(updatedOrder).State = EntityState.Modified;
             _db.Orders.Update(updatedOrder);
             await _db.SaveChangesAsync();
         }
@@ -138,6 +140,7 @@ namespace MajorTest.Services.OrdersService
                 {
                     var statesForSelectList = Order.OrderStates.
                         Where(o => o.Key != "inProcess" && o.Key != "done")
+                        // Чтобы нельзя было у нового поставить просто так "Выполнено" или "Передан" без курьера.
                         .Select(o => new
                         {
                             StateKey = o.Key,

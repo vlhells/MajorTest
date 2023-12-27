@@ -1,6 +1,7 @@
 ﻿using MajorTest.Controllers;
 using MajorTest.Models;
 using MajorTest.Services.CouriersService;
+using MajorTest.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 
@@ -13,7 +14,7 @@ namespace UnitTests
 		{
 			// Arrange:
 			var couriersService = Substitute.For<ICouriersService>();
-			couriersService.IndexAsync(String.Empty).Returns(ImitateCouriersDataset());
+			couriersService.IndexAsync(String.Empty, 1).Returns(ImitateCouriersDataset());
 			var controller = new CouriersController(couriersService);
 
 			// Act:
@@ -21,10 +22,10 @@ namespace UnitTests
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
-			var model = Assert.IsAssignableFrom<IEnumerable<Courier>>(isViewResult.Model);
-			Assert.Equal(ImitateCouriersDataset().Count(), model.Count());
+			var model = Assert.IsAssignableFrom<IndexCourierViewModel>(isViewResult.Model);
+			Assert.Equal(ImitateCouriersDataset().Couriers.Count(), model.Couriers.Count());
 		}
-		private List<Courier> ImitateCouriersDataset()
+		private IndexCourierViewModel ImitateCouriersDataset()
 		{
 			var couriers = new List<Courier>
 			{
@@ -36,10 +37,46 @@ namespace UnitTests
 							 LastName = "в", PhoneNumber = "+79991231519"},
 			};
 
-			return couriers;
+			return new IndexCourierViewModel { Couriers = couriers, PageViewModel = new PageViewModel(1, 2, 3)};
 		}
+        [Fact]
+        public async Task IndexReturnsFilteredData()
+        {
+            // Arrange:
+            string searchString = "Dmitry";
+            var courierService = Substitute.For<ICouriersService>();
+            courierService.IndexAsync(searchString, 1).Returns
+                (ImitateFiltredDataset(searchString));
+            var controller = new CouriersController(courierService);
 
-		[Fact]
+            // Act:
+            var result = await controller.Index(searchString);
+
+            // Assert:
+            var isViewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<IndexCourierViewModel>(isViewResult.Model);
+            Assert.True(ImitateCouriersDataset().Couriers.Count() > model.Couriers.Count());
+        }
+        private IndexCourierViewModel ImitateFiltredDataset(string searchString)
+        {
+            var couriers = ImitateCouriersDataset().Couriers.Where(o => o.FirstName.Contains(searchString) ||
+                                      o.SecondName.Contains(searchString) ||
+                                      o.LastName.Contains(searchString) ||
+                                      o.FirstName.Contains(searchString) ||
+                                      o.SecondName.Contains(searchString) ||
+                                      o.LastName.Contains(searchString) ||
+                                      o.FirstName.Contains(searchString) ||
+                                      o.SecondName.Contains(searchString) ||
+                                      o.LastName.Contains(searchString) ||
+                                      o.PhoneNumber.Contains(searchString) ||
+                                      o.PhoneNumber.Contains(searchString) ||
+                                      o.PhoneNumber.Contains(searchString))
+                .ToList();
+
+            return new IndexCourierViewModel { Couriers = couriers, PageViewModel = new PageViewModel(1, 2, 3) };
+        }
+
+        [Fact]
 		public async Task POSTCreateReturnsRedirToAct()
 		{
 			// Arrange:
