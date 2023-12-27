@@ -1,6 +1,7 @@
 ﻿@using MajorTest.Models
+@using MajorTest.ViewModels
 
-@model IEnumerable<Order>
+@model IndexOrderViewModel
 
 @{
 	ViewBag.Title = "Все заявки";
@@ -9,6 +10,7 @@
 <form asp-controller="Orders" asp-action="Index" method="get">
 	<p>
 		Слово: <input type="text" name="searchString" />
+		<input type="hidden" value="@Model.PageViewModel.PageNumber" name="page" />
 		<input type="submit" value="Найти" />
 	</p>
 </form>
@@ -18,7 +20,7 @@
 	<tr><th>Статус заявки</th>
 		<th>Время встречи</th>
 		<th>Место встречи</th>
-		<th>Адресат</th>
+		<th>Целевой адрес</th>
 		<th>Описание груза</th>
 		<th>Масса груза (кг)</th>
 		<th>Длина груза (см)</th>
@@ -30,7 +32,7 @@
 		<th>Контактный номер получателя</th>
 		<th>Курьер</th>
 	</tr>
-	@foreach (var item in Model)
+	@foreach (var item in Model.Orders)
 	{
 		<tr>
 			<td>
@@ -41,7 +43,7 @@
 				{
 					<a asp-action="ChangeState" asp-route-id="@item.Id" method="get">(Изменить)</a>
 				}
-				else
+				else if (item.State == Order.OrderStates["cancelled"])
 				{
 					<br />
 					<a asp-action="CancellationReason" asp-route-id="@item.Id">Посмотреть причину</a>
@@ -89,9 +91,25 @@
 			}
 			<td>
 				<form asp-controller="Orders" asp-action="Delete" method="post" asp-route-id="@item.Id">
-					<input type="submit" value="Удалить" />
+					<input type="submit" value="Удалить заявку" />
 				</form>
 			</td>
 		</tr>
 	}
 </table>
+
+<section id="paginationBlock">
+	@if (Model.PageViewModel.HasPreviousPage)
+	{
+		<a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" class="pagination-item">
+			@(Model.PageViewModel.PageNumber - 1)
+		</a>
+	}
+	<span class="pagination-item">@Model.PageViewModel.PageNumber</span>
+	@if (Model.PageViewModel.HasNextPage)
+	{
+		<a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" class="pagination-item">
+			@(Model.PageViewModel.PageNumber + 1)
+		</a>
+	}
+</section>

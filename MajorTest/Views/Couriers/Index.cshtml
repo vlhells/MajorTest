@@ -1,6 +1,7 @@
 ﻿@using MajorTest.Models
+@using MajorTest.ViewModels
 
-@model IEnumerable<Courier>
+@model IndexCourierViewModel
 
 @{
 	ViewBag.Title = "Все курьеры";
@@ -9,6 +10,7 @@
 <form asp-controller="Couriers" asp-action="Index" method="get">
 	<p>
 		Слово: <input type="text" name="searchString" />
+		<input type="hidden" value="@Model.PageViewModel.PageNumber" name="page" />
 		<input type="submit" value="Найти" />
 	</p>
 </form>
@@ -19,7 +21,7 @@
 		<th>ФИО курьера</th>
 		<th>Контактный номер курьера</th>
 	</tr>
-	@foreach (var item in Model)
+	@foreach (var item in Model.Couriers)
 	{
 		<tr>
 			<td>@item.FirstName @item.SecondName @item.LastName</td>
@@ -35,3 +37,19 @@
 		</tr>
 	}
 </table>
+
+<section id="paginationBlock">
+	@if (Model.PageViewModel.HasPreviousPage)
+	{
+		<a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" class="pagination-item">
+			@(Model.PageViewModel.PageNumber - 1)
+		</a>
+	}
+	<span class="pagination-item">@Model.PageViewModel.PageNumber</span>
+	@if (Model.PageViewModel.HasNextPage)
+	{
+		<a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" class="pagination-item">
+			@(Model.PageViewModel.PageNumber + 1)
+		</a>
+	}
+</section>

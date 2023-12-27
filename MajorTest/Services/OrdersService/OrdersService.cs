@@ -1,5 +1,6 @@
 ﻿using MajorTest.Dto;
 using MajorTest.Models;
+using MajorTest.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,32 +15,44 @@ namespace MajorTest.Services.OrdersService
             _db = db;
         }
 
-        public async Task<IEnumerable<Order>> IndexAsync(string? searchString)
+        public async Task<IndexOrderViewModel> IndexAsync(string? searchString, int page)
         {
+            int pageSize = 20;
+
             IQueryable<Order> orders = _db.Orders.AsNoTracking()
                          .Include(o => o.Item)
                          .Include(o => o.ItemSender)
                          .Include(o => o.Courier)
                          .Include(o => o.ItemReceiver);
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                orders = orders.Where(o => o.ItemSender.FirstName.Contains(searchString) ||
-                                      o.ItemSender.SecondName.Contains(searchString) ||
-                                      o.ItemSender.LastName.Contains(searchString) ||
-                                      o.Courier.FirstName.Contains(searchString) ||
-                                      o.Courier.SecondName.Contains(searchString) ||
-                                      o.Courier.LastName.Contains(searchString) ||
-                                      o.ItemReceiver.FirstName.Contains(searchString) ||
-                                      o.ItemReceiver.SecondName.Contains(searchString) ||
-                                      o.ItemReceiver.LastName.Contains(searchString) ||
+			if (!String.IsNullOrEmpty(searchString))
+			{
+				orders = orders.Where(o => o.ItemSender.FirstName.Contains(searchString) ||
+									  o.ItemSender.SecondName.Contains(searchString) ||
+									  o.ItemSender.LastName.Contains(searchString) ||
+									  o.Courier.FirstName.Contains(searchString) ||
+									  o.Courier.SecondName.Contains(searchString) ||
+									  o.Courier.LastName.Contains(searchString) ||
+									  o.ItemReceiver.FirstName.Contains(searchString) ||
+									  o.ItemReceiver.SecondName.Contains(searchString) ||
+									  o.ItemReceiver.LastName.Contains(searchString) ||
 									  o.ItemSender.PhoneNumber.Contains(searchString) ||
 									  o.Courier.PhoneNumber.Contains(searchString) ||
-									  o.ItemReceiver.PhoneNumber.Contains(searchString) );
-            }
+									  o.ItemReceiver.PhoneNumber.Contains(searchString));
+			}
 
-            return await orders.ToListAsync();
-        }
+			var count = await orders.CountAsync();
+			var items = await orders.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+			PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            IndexOrderViewModel indexOrderViewModel = new IndexOrderViewModel
+            {
+                PageViewModel = pageViewModel,
+                Orders = items
+            };
+
+            return indexOrderViewModel;
+		}
 
         public async Task CreateAsync(Order newOrder)
         {
@@ -119,20 +132,36 @@ namespace MajorTest.Services.OrdersService
 
             if (thisOrder != null)
             {
-                var statesForSelectList = Order.OrderStates.
-                    Where(o => o.Key != "done" && o.Key != "inProcess")
-                    .Select(o => new
-                {
-                    StateKey = o.Key,
-                    StateValue = o.Value
-                }).ToList();
+                ChangeOrderStateDto dto = new ChangeOrderStateDto();
 
-                return new ChangeOrderStateDto
+                if (thisOrder.State == Order.OrderStates["new"])
                 {
-                    orderStates = new SelectList(statesForSelectList,
-                    "StateKey", "StateValue"),
-                    thisOrderId = thisOrder.Id
-                };
+                    var statesForSelectList = Order.OrderStates.
+                        Where(o => o.Key != "inProcess" && o.Key != "done")
+                        .Select(o => new
+                        {
+                            StateKey = o.Key,
+                            StateValue = o.Value
+                        }).ToList();
+
+                    dto.orderStates = new SelectList(statesForSelectList, "StateKey", "StateValue");
+                    dto.thisOrderId = thisOrder.Id;
+                }
+                else
+                {
+                    var statesForSelectList = Order.OrderStates.
+                        Where(o => o.Key != "inProcess" && o.Key != "new")
+                        .Select(o => new
+                        {
+                            StateKey = o.Key,
+                            StateValue = o.Value
+                        }).ToList();
+
+                    dto.orderStates = new SelectList(statesForSelectList, "StateKey", "StateValue");
+                    dto.thisOrderId = thisOrder.Id;
+                }
+
+                return dto;
             }
 
             return null;

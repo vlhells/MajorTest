@@ -15,9 +15,9 @@ namespace MajorTest.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string? searchString)
+		public async Task<IActionResult> Index(string? searchString, int page = 1)
 		{
-			return View(await _orderService.IndexAsync(searchString));
+			return View(await _orderService.IndexAsync(searchString, page));
 		}
 
 		[HttpGet]

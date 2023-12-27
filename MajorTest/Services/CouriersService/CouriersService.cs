@@ -1,4 +1,5 @@
 ﻿using MajorTest.Models;
+using MajorTest.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace MajorTest.Services.CouriersService
@@ -12,18 +13,30 @@ namespace MajorTest.Services.CouriersService
             _db = db;
         }
 
-        public async Task<IEnumerable<Courier>> IndexAsync(string searchString)
+        public async Task<IndexCourierViewModel> IndexAsync(string? searchString, int page)
         {
+            int pageSize = 1;
+
             IQueryable<Courier> couriers = _db.Couriers.AsNoTracking();
 
-            if (!String.IsNullOrEmpty(searchString))
+			if (!String.IsNullOrEmpty(searchString))
             {
                 couriers = couriers.Where(o => o.FirstName.Contains(searchString) ||
                                       o.SecondName.Contains(searchString) ||
                                       o.LastName.Contains(searchString) );
             }
 
-            return await couriers.ToListAsync();
+			var count = await couriers.CountAsync();
+			var items = await couriers.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+			PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            IndexCourierViewModel indexCourierViewModel = new IndexCourierViewModel
+			{
+                PageViewModel = pageViewModel,
+                Couriers = items
+			};
+
+			return indexCourierViewModel;
         }
 
         public async Task CreateAsync(Courier newCourier)

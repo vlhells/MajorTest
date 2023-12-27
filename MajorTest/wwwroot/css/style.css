@@ -68,3 +68,27 @@ footer {
     align-items: center;
     opacity: 0.75;
 }
+
+#paginationBlock {
+    text-align: center;
+    font-size: 20px;
+}
+
+.pagination-item {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.pagination-item:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination-item.active {
+    background-color: #007bff;
+    color: #fff;
+}
