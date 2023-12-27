@@ -1,21 +1,21 @@
 ﻿using MajorTest.Dto;
 using MajorTest.Models;
-using MajorTest.Services.OrderService;
+using MajorTest.Services.OrdersService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MajorTest.Controllers
 {
 	public class OrdersController : Controller
 	{
-		private IOrderService _orderService;
+		private IOrdersService _orderService;
 
-		public OrdersController(IOrderService orderService)
+		public OrdersController(IOrdersService orderService)
 		{
 			_orderService = orderService;
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(string searchString)
+		public async Task<IActionResult> Index(string? searchString)
 		{
 			return View(await _orderService.IndexAsync(searchString));
 		}

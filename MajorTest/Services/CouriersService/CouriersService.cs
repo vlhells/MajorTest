@@ -1,13 +1,13 @@
 ﻿using MajorTest.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MajorTest.Services.CourierService
+namespace MajorTest.Services.CouriersService
 {
-    public class CourierService: ICourierService
+    public class CouriersService: ICouriersService
     {
         private MajorContext _db;
 
-        public CourierService(MajorContext db)
+        public CouriersService(MajorContext db)
         {
             _db = db;
         }

@@ -1,14 +1,14 @@
 ﻿using MajorTest.Models;
-using MajorTest.Services.CourierService;
+using MajorTest.Services.CouriersService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MajorTest.Controllers
 {
     public class CouriersController : Controller
     {
-        private ICourierService _courierService;
+        private ICouriersService _courierService;
 
-        public CouriersController(ICourierService courierService)
+        public CouriersController(ICouriersService courierService)
         {
             _courierService = courierService;
         }
