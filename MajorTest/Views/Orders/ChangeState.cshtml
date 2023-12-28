@@ -13,9 +13,9 @@
         <input type="hidden" asp-for="thisOrderId" />
     </div>
     <p class="form-group">
-        <label>Статус заказа: </label>
+        <label>Статус заявки: </label>
         <select id="states" asp-for="selectedState" asp-items="Model.orderStates" onchange="checkState()">
-            <option value="">Выберите статус заказа</option>
+            <option value="">Выберите статус заявки</option>
         </select>
     </p>
     <div class="form-group" id="comment" style="display: none;">

@@ -1,5 +1,4 @@
-﻿using System;
-using MajorTest.Dto;
+﻿using MajorTest.Dto;
 using MajorTest.Models;
 using MajorTest.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;

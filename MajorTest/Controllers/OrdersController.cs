@@ -23,8 +23,9 @@ namespace MajorTest.Controllers
 		[HttpGet]
 		public async Task<IActionResult> SetCourier(int orderId)
 		{
+			var order = await _orderService.GetOrderByIdAsync(orderId);
 			var result = await _orderService.SelectCourier(orderId);
-			if (result != null)
+			if (result != null && order != null && order.State == Order.OrderStates["new"])
 			{
 				return View(result);
 			}
@@ -37,11 +38,15 @@ namespace MajorTest.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var result = await _orderService.SetCourier(orderAndCourier.thisOrderId, 
-					orderAndCourier.selectedCourierId);
-				if (result)
-					return RedirectToAction("Index");
-			}
+				Order order = await _orderService.GetOrderByIdAsync(orderAndCourier.thisOrderId);
+                if (order != null && order.State == Order.OrderStates["new"])
+                {
+                    var result = await _orderService.SetCourier(orderAndCourier.thisOrderId,
+                        orderAndCourier.selectedCourierId);
+                    if (result)
+                        return RedirectToAction("Index");
+                }
+            }
 
 			return BadRequest();
 		}
@@ -82,9 +87,13 @@ namespace MajorTest.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await _orderService.EditAsync(updatedOrder);
-				return RedirectToAction("Index");
-			}
+				Order order = await _orderService.GetOrderByIdAsync(updatedOrder.Id);
+                if (order != null && order.State == Order.OrderStates["new"])
+                {
+                    await _orderService.EditAsync(updatedOrder);
+                    return RedirectToAction("Index");
+                }
+            }
 
 			return BadRequest();
 		}
@@ -102,11 +111,16 @@ namespace MajorTest.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ChangeState(int id)
 		{
-			var order = await _orderService.GetOrderState(id);
-			if (order != null)
+			var orderState = await _orderService.GetOrderState(id);
+            if (orderState != null)
 			{
-				return View(order);
-			}
+				Order order = await _orderService.GetOrderByIdAsync(orderState.thisOrderId);
+                if (order != null && order.State != Order.OrderStates["cancelled"] &&
+                order.State != Order.OrderStates["done"])
+                {
+                    return View(orderState);
+                }
+            }
 
 			return NotFound();
 		}
@@ -116,13 +130,18 @@ namespace MajorTest.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var result = await _orderService.ChangeState(updatedOrder.thisOrderId, 
-					updatedOrder.selectedState, updatedOrder.cancellationComment);
-				if (result)
-				{
-					return RedirectToAction("Index");
-				}
-			}
+				Order order = await _orderService.GetOrderByIdAsync(updatedOrder.thisOrderId);
+                if (order != null && order.State != Order.OrderStates["cancelled"] &&
+                order.State != Order.OrderStates["done"])
+                {
+                    var result = await _orderService.ChangeState(updatedOrder.thisOrderId,
+                        updatedOrder.selectedState, updatedOrder.cancellationComment);
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
 
             return BadRequest();
 		}
@@ -131,7 +150,7 @@ namespace MajorTest.Controllers
         public async Task<IActionResult> CancellationReason(int id)
         {
             var order = await _orderService.GetOrderByIdAsync(id);
-            if (order != null)
+            if (order != null && order.State == Order.OrderStates["cancelled"])
             {
                 return View(order);
             }
