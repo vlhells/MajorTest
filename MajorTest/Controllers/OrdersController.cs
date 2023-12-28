@@ -64,7 +64,7 @@ namespace MajorTest.Controllers
 			return BadRequest();
 		}
 
-		[HttpGet]
+        [HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
             var order = await _orderService.GetOrderByIdAsync(id);
@@ -76,7 +76,8 @@ namespace MajorTest.Controllers
             return NotFound();
 		}
 
-		[HttpPost]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
 		public async Task<IActionResult> Edit(Order updatedOrder)
 		{
 			if (ModelState.IsValid)

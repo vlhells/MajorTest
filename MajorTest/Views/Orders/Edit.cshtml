@@ -6,6 +6,7 @@
 
 <form class="centered" id="subPageMargin" asp-action="Edit" asp-controller="Orders">
     <div asp-validation-summary="All" class="text-danger"></div>
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
     </div>

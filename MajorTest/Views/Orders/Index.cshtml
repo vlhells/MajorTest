@@ -64,7 +64,7 @@
 
 			@if (item.Courier == null)
 			{
-				if (item.State != Order.OrderStates["cancelled"])
+				if (item.State == Order.OrderStates["new"])
 				{
 					<td>
 						<a asp-action="SetCourier" asp-controller="Orders" asp-route-orderId="@item.Id">Выбрать курьера</a>
