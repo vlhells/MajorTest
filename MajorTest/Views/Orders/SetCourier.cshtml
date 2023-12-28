@@ -11,12 +11,12 @@
 
     <p class ="form-group">
         <label>Список курьеров: </label>
-        <select asp-for="selectedCourierId" asp-items="Model.allCouriers">
+        <select asp-for="SelectedCourierId" asp-items="Model.AllCouriers">
             <option value="">Выбрать курьера</option>
         </select>
     </p>
     <div class="form-group">
-        <input type="hidden" asp-for="thisOrderId" />
+        <input type="hidden" asp-for="ThisOrderId" />
     </div>
 
     <div class="form-group">

@@ -3,7 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MajorTest.Models
 {
-	public class Courier: IHuman
+    /// <summary>
+    /// Class incapsulates all info about <see cref="Courier"/>.
+    /// </summary>
+    public class Courier: IHuman
 	{
 		[Key]
 		public int Id { get; set; }

@@ -2,7 +2,10 @@
 
 namespace MajorTest.Models
 {
-	public class Item
+    /// <summary>
+    /// Class incapsulates all info about <see cref="Item"/>.
+    /// </summary>
+    public class Item
 	{
 		[Key]
 		public int Id { get; private set; }

@@ -133,8 +133,8 @@ namespace MajorTest.Services.OrdersService
                     DisplayName = $"{c.FirstName} {c.SecondName} {c.LastName}"
                 }).ToListAsync();
 
-                return new SelectCourierDto { allCouriers = new SelectList(couriersForSelectList, 
-                    "Id", "DisplayName"), thisOrderId = thisOrder.Id };
+                return new SelectCourierDto { AllCouriers = new SelectList(couriersForSelectList, 
+                    "Id", "DisplayName"), ThisOrderId = thisOrder.Id };
             }
 
             return null;
@@ -177,8 +177,8 @@ namespace MajorTest.Services.OrdersService
                             StateValue = o.Value
                         }).ToList();
 
-                    dto.orderStates = new SelectList(statesForSelectList, "StateKey", "StateValue");
-                    dto.thisOrderId = thisOrder.Id;
+                    dto.OrderStates = new SelectList(statesForSelectList, "StateKey", "StateValue");
+                    dto.ThisOrderId = thisOrder.Id;
                 }
                 else
                 {
@@ -190,8 +190,8 @@ namespace MajorTest.Services.OrdersService
                             StateValue = o.Value
                         }).ToList();
 
-                    dto.orderStates = new SelectList(statesForSelectList, "StateKey", "StateValue");
-                    dto.thisOrderId = thisOrder.Id;
+                    dto.OrderStates = new SelectList(statesForSelectList, "StateKey", "StateValue");
+                    dto.ThisOrderId = thisOrder.Id;
                 }
 
                 return dto;

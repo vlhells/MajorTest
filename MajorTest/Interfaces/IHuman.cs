@@ -1,5 +1,8 @@
 ﻿namespace MajorTest.Interfaces
 {
+    /// <summary>
+    /// An interface determines basic Human properties.
+    /// </summary>
     public interface IHuman
     {
         public string FirstName { get; set; }

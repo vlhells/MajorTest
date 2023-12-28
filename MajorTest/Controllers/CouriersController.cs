@@ -68,7 +68,7 @@ namespace MajorTest.Controllers
             if (result)
                 return RedirectToAction("Index");
             else
-                return NotFound();
+                return BadRequest();
         }
     }
 }

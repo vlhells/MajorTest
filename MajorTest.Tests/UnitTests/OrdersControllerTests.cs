@@ -122,17 +122,17 @@ namespace UnitTests
 			var ordersService = Substitute.For<IOrdersService>();
 			var dto = new SelectCourierDto
 			{
-				allCouriers = ImitateCouriersDataset(),
-				selectedCourierId = 1,
-				thisOrderId = 1
+				AllCouriers = ImitateCouriersDataset(),
+				SelectedCourierId = 1,
+				ThisOrderId = 1
 			};
-			ordersService.GetOrderByIdAsync(dto.thisOrderId).Returns(
-				ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.thisOrderId));
-            ordersService.SelectCourier(dto.thisOrderId).Returns(dto);
+			ordersService.GetOrderByIdAsync(dto.ThisOrderId).Returns(
+				ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.ThisOrderId));
+            ordersService.SelectCourier(dto.ThisOrderId).Returns(dto);
 			var controller = new OrdersController(ordersService);
 
 			// Act:
-			var result = await controller.SetCourier(dto.thisOrderId);
+			var result = await controller.SetCourier(dto.ThisOrderId);
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
@@ -223,15 +223,15 @@ namespace UnitTests
 			var ordersService = Substitute.For<IOrdersService>();
 			var dto = new ChangeOrderStateDto()
 			{
-				thisOrderId = 1
+				ThisOrderId = 1
 			};
-			ordersService.GetOrderState(dto.thisOrderId).Returns(dto);
-			ordersService.GetOrderByIdAsync(dto.thisOrderId).Returns(
-				ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.thisOrderId));
+			ordersService.GetOrderState(dto.ThisOrderId).Returns(dto);
+			ordersService.GetOrderByIdAsync(dto.ThisOrderId).Returns(
+				ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.ThisOrderId));
 			var controller = new OrdersController(ordersService);
 
 			// Act:
-			var result = await controller.ChangeState(dto.thisOrderId);
+			var result = await controller.ChangeState(dto.ThisOrderId);
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
@@ -245,13 +245,13 @@ namespace UnitTests
 			var ordersService = Substitute.For<IOrdersService>();
 			var dto = new ChangeOrderStateDto()
 			{
-				selectedState = "state",
-				cancellationComment = "comment",
-				thisOrderId = 1,
+				SelectedState = "state",
+				CancellationComment = "comment",
+				ThisOrderId = 1,
 			};
-            ordersService.GetOrderByIdAsync(dto.thisOrderId).Returns(
-                ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.thisOrderId));
-            ordersService.ChangeState(dto.thisOrderId, dto.selectedState, dto.cancellationComment)
+            ordersService.GetOrderByIdAsync(dto.ThisOrderId).Returns(
+                ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.ThisOrderId));
+            ordersService.ChangeState(dto.ThisOrderId, dto.SelectedState, dto.CancellationComment)
 				.Returns(true);
             var controller = new OrdersController(ordersService);
 

@@ -38,11 +38,11 @@ namespace MajorTest.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				Order order = await _orderService.GetOrderByIdAsync(orderAndCourier.thisOrderId);
+				Order order = await _orderService.GetOrderByIdAsync(orderAndCourier.ThisOrderId);
                 if (order != null && order.State == Order.OrderStates["new"])
                 {
-                    var result = await _orderService.SetCourier(orderAndCourier.thisOrderId,
-                        orderAndCourier.selectedCourierId);
+                    var result = await _orderService.SetCourier(orderAndCourier.ThisOrderId,
+                        orderAndCourier.SelectedCourierId);
                     if (result)
                         return RedirectToAction("Index");
                 }
@@ -114,7 +114,7 @@ namespace MajorTest.Controllers
 			var orderState = await _orderService.GetOrderState(id);
             if (orderState != null)
 			{
-				Order order = await _orderService.GetOrderByIdAsync(orderState.thisOrderId);
+				Order order = await _orderService.GetOrderByIdAsync(orderState.ThisOrderId);
                 if (order != null && order.State != Order.OrderStates["cancelled"] &&
                 order.State != Order.OrderStates["done"])
                 {
@@ -130,12 +130,12 @@ namespace MajorTest.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				Order order = await _orderService.GetOrderByIdAsync(updatedOrder.thisOrderId);
+				Order order = await _orderService.GetOrderByIdAsync(updatedOrder.ThisOrderId);
                 if (order != null && order.State != Order.OrderStates["cancelled"] &&
                 order.State != Order.OrderStates["done"])
                 {
-                    var result = await _orderService.ChangeState(updatedOrder.thisOrderId,
-                        updatedOrder.selectedState, updatedOrder.cancellationComment);
+                    var result = await _orderService.ChangeState(updatedOrder.ThisOrderId,
+                        updatedOrder.SelectedState, updatedOrder.CancellationComment);
                     if (result)
                     {
                         return RedirectToAction("Index");

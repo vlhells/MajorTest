@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MajorTest.Models
 {
+	/// <summary>
+	/// Class incapsulates all info about <see cref="Order"/>.
+	/// </summary>
 	public class Order
 	{
 		[Key]

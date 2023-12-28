@@ -3,6 +3,9 @@ using MajorTest.Interfaces;
 
 namespace MajorTest.Models
 {
+	/// <summary>
+	/// Class incapsulates all info about <see cref="ItemSender"/>.
+	/// </summary>
     public class ItemSender : IHuman
 	{
 		[Key]

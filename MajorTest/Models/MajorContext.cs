@@ -2,6 +2,9 @@
 
 namespace MajorTest.Models
 {
+    /// <summary>
+    /// Db-class.
+    /// </summary>
     public class MajorContext : DbContext
     {
         public DbSet<Order> Orders { get; private set; } = null!;

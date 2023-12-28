@@ -65,11 +65,15 @@ namespace MajorTest.Services.CouriersService
         public async Task<bool> DeleteAsync(int id)
         {
             var targetCourier = await _db.Couriers.FindAsync(id);
+            
             if (targetCourier != null)
             {
-                _db.Couriers.Remove(targetCourier);
-                await _db.SaveChangesAsync();
-                return true;
+                if (!(_db.Orders.Any(o => o.Courier == targetCourier)))
+                {
+                    _db.Couriers.Remove(targetCourier);
+                    await _db.SaveChangesAsync();
+                    return true;
+                }
             }
 
             return false;

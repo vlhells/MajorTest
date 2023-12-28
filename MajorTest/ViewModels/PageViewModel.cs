@@ -1,6 +1,11 @@
 ﻿namespace MajorTest.ViewModels
 {
-	public class PageViewModel
+    /// <summary>
+    /// Incapsulate current <see cref="PageNumber"/> and <see cref="TotalPages"/> 
+    /// num and properties for check if there are previous and next page: 
+    /// <see cref="HasPreviousPage"/>, <see cref="HasNextPage"/>.
+    /// </summary>
+    public class PageViewModel
 	{
 		public int PageNumber { get; private set; }
 		public int TotalPages { get; private set; }
