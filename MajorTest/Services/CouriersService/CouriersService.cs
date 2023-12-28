@@ -41,14 +41,20 @@ namespace MajorTest.Services.CouriersService
 
         public async Task CreateAsync(Courier newCourier)
         {
-            await _db.Couriers.AddAsync(newCourier);
-            await _db.SaveChangesAsync();
+            if (newCourier != null)
+            {
+                await _db.Couriers.AddAsync(newCourier);
+                await _db.SaveChangesAsync();
+            }
         }
 
         public async Task EditAsync(Courier updatedCourier)
         {
-            _db.Couriers.Update(updatedCourier);
-            await _db.SaveChangesAsync();
+            if (updatedCourier != null)
+            {
+                _db.Couriers.Update(updatedCourier);
+                await _db.SaveChangesAsync();
+            }
         }
 
         public async Task<Courier> GetCourierByIdAsync(int id)
