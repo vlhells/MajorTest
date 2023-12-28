@@ -1,6 +1,5 @@
 Запустив приложение, Вы попадете на страницу /Orders/Index.  
 На ней представлены все заявки, которые есть в базе.  
-Есть пагинация.  
     
 ![alt text](overviewScreens/OrdersIndexAll.PNG "/Orders/Index preview")  
     
