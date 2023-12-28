@@ -42,7 +42,9 @@ namespace UnitTests
 						  ItemReceiver = new ItemReceiver{ FirstName = "�",
 												 SecondName = "�",
 												 LastName = "�",
-												 PhoneNumber = "+79991231519"}},
+												 PhoneNumber = "+79991231519"},
+						  State = Order.OrderStates["new"],
+						  Id = 1},
 
 				new Order{Courier = new Courier{ FirstName = "Dmitry",
 											     SecondName = "M",
@@ -124,7 +126,9 @@ namespace UnitTests
 				selectedCourierId = 1,
 				thisOrderId = 1
 			};
-			ordersService.SelectCourier(dto.thisOrderId).Returns(dto);
+			ordersService.GetOrderByIdAsync(dto.thisOrderId).Returns(
+				ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.thisOrderId));
+            ordersService.SelectCourier(dto.thisOrderId).Returns(dto);
 			var controller = new OrdersController(ordersService);
 
 			// Act:
@@ -138,12 +142,12 @@ namespace UnitTests
 		{
 			var couriers = new List<Courier>
 			{
-				new Courier{ FirstName = "������", SecondName = "��������",
-							 LastName = "���������", PhoneNumber = "+79991231515"},
-				new Courier{ FirstName = "�����", SecondName = "������",
-							 LastName = "�������", PhoneNumber = "+79991231516"},
-				new Courier{ FirstName = "�", SecondName = "�",
-							 LastName = "�", PhoneNumber = "+79991231519"},
+				new Courier{ FirstName = "Alex", SecondName = "C",
+							 LastName = "Hirsch", PhoneNumber = "+79991231515"},
+				new Courier{ FirstName = "Sponge", SecondName = "Bob",
+							 LastName = "Squarepants", PhoneNumber = "+79991231516"},
+				new Courier{ FirstName = "Test", SecondName = "T",
+							 LastName = "Tester", PhoneNumber = "+79991231519"},
 			};
 
 			return new SelectList(couriers);
@@ -185,9 +189,10 @@ namespace UnitTests
 		public async Task POSTEditReturnsRedirToAct()
 		{
 			// Arrange:
-			var ordersService = Substitute.For<IOrdersService>();
-			var order = new Order();
-			var controller = new OrdersController(ordersService);
+			var order = ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == 1);
+            var ordersService = Substitute.For<IOrdersService>();
+            ordersService.GetOrderByIdAsync(order.Id).Returns(order);
+            var controller = new OrdersController(ordersService);
 
 			// Act:
 			var result = await controller.Edit(order);
@@ -216,12 +221,17 @@ namespace UnitTests
 		{
 			// Arrange:
 			var ordersService = Substitute.For<IOrdersService>();
-			var dto = new ChangeOrderStateDto();
-			ordersService.GetOrderState(1).Returns(dto);
+			var dto = new ChangeOrderStateDto()
+			{
+				thisOrderId = 1
+			};
+			ordersService.GetOrderState(dto.thisOrderId).Returns(dto);
+			ordersService.GetOrderByIdAsync(dto.thisOrderId).Returns(
+				ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.thisOrderId));
 			var controller = new OrdersController(ordersService);
 
 			// Act:
-			var result = await controller.ChangeState(1);
+			var result = await controller.ChangeState(dto.thisOrderId);
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
@@ -239,9 +249,11 @@ namespace UnitTests
 				cancellationComment = "comment",
 				thisOrderId = 1,
 			};
-			ordersService.ChangeState(dto.thisOrderId, dto.selectedState, dto.cancellationComment)
+            ordersService.GetOrderByIdAsync(dto.thisOrderId).Returns(
+                ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == dto.thisOrderId));
+            ordersService.ChangeState(dto.thisOrderId, dto.selectedState, dto.cancellationComment)
 				.Returns(true);
-			var controller = new OrdersController(ordersService);
+            var controller = new OrdersController(ordersService);
 
 			// Act:
 			var result = await controller.ChangeState(dto);
@@ -255,7 +267,10 @@ namespace UnitTests
 		{
 			// Arrange:
 			var ordersService = Substitute.For<IOrdersService>();
-			var order = new Order();
+			var order = new Order()
+			{
+				State = Order.OrderStates["cancelled"]
+			};
 			ordersService.GetOrderByIdAsync(1).Returns(order);
 			var controller = new OrdersController(ordersService);
 

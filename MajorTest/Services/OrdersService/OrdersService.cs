@@ -62,31 +62,38 @@ namespace MajorTest.Services.OrdersService
 
         public async Task EditAsync(Order updatedOrder)
         {
-            using (var transaction = _db.Database.BeginTransaction())
-            {
-                try
+            if (updatedOrder != null)
+            { 
+                var thisOrder = await _db.Orders.FindAsync(updatedOrder.Id);
+                if (thisOrder.State == Order.OrderStates["new"])
                 {
-                    var originalOrderFromDb = await _db.Orders.Include(o => o.ItemSender)
-                                                        .Include(o => o.Item)
-                                                        .Include(o => o.Courier)
-                                                        .Include(o => o.ItemReceiver)
-                                                        .FirstOrDefaultAsync(o => o.Id == updatedOrder.Id);
-                    if (originalOrderFromDb != null)
+                    using (var transaction = _db.Database.BeginTransaction())
                     {
-                        originalOrderFromDb.TargetAddress = updatedOrder.TargetAddress;
-                        originalOrderFromDb.MeetingPlace = updatedOrder.MeetingPlace;
-                        originalOrderFromDb.MeetingTime = updatedOrder.MeetingTime;
-                        originalOrderFromDb.ItemSender = updatedOrder.ItemSender;
-                        originalOrderFromDb.Item = updatedOrder.Item;
-                        originalOrderFromDb.Courier = updatedOrder.Courier;
-                        originalOrderFromDb.ItemReceiver = updatedOrder.ItemReceiver;
-                        await _db.SaveChangesAsync();
-                        await transaction.CommitAsync();
+                        try
+                        {
+                            var originalOrderFromDb = await _db.Orders.Include(o => o.ItemSender)
+                                                                .Include(o => o.Item)
+                                                                .Include(o => o.Courier)
+                                                                .Include(o => o.ItemReceiver)
+                                                                .FirstOrDefaultAsync(o => o.Id == updatedOrder.Id);
+                            if (originalOrderFromDb != null)
+                            {
+                                originalOrderFromDb.TargetAddress = updatedOrder.TargetAddress;
+                                originalOrderFromDb.MeetingPlace = updatedOrder.MeetingPlace;
+                                originalOrderFromDb.MeetingTime = updatedOrder.MeetingTime;
+                                originalOrderFromDb.ItemSender = updatedOrder.ItemSender;
+                                originalOrderFromDb.Item = updatedOrder.Item;
+                                originalOrderFromDb.Courier = updatedOrder.Courier;
+                                originalOrderFromDb.ItemReceiver = updatedOrder.ItemReceiver;
+                                await _db.SaveChangesAsync();
+                                await transaction.CommitAsync();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await transaction.RollbackAsync();
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
                 }
             }
         }
