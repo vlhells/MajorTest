@@ -22,7 +22,8 @@
 Заявку можно передать на выполнение курьеру:  
 ![alt text](overviewScreens/OrderSetCourier.PNG "/Orders/SetCourier preview")  
 ![alt text](overviewScreens/OrdersIndexWithCourier.PNG "/Orders/Index order with courier preview")   
-    
+УИД - уникальный идентификатор курьера.
+	
 Статус заявки можно изменить на успешное выполнение:  
 ![alt text](overviewScreens/OrderStateDone.PNG "/Orders/Index order with done-state preview")   
     
