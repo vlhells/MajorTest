@@ -58,11 +58,11 @@ namespace MajorTest.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(Order newOrder)
+		public async Task<IActionResult> Create(OrderDto newOrderData)
 		{
 			if (ModelState.IsValid)
 			{
-				await _orderService.CreateAsync(newOrder);
+				await _orderService.CreateAsync(newOrderData);
 				return RedirectToAction("Index");
 			}
 
@@ -73,9 +73,12 @@ namespace MajorTest.Controllers
 		public async Task<IActionResult> Edit(int id)
 		{
             var order = await _orderService.GetOrderByIdAsync(id);
+			var orderDto = new OrderDto(order.Item, order.ItemSender, order.ItemReceiver,
+				order.MeetingTime, order.MeetingPlace, order.TargetAddress);
+
             if (order != null && order.State == Order.OrderStates["new"])
             {
-                return View(order);
+                return View(orderDto);
             }
 
             return NotFound();
@@ -83,14 +86,14 @@ namespace MajorTest.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-		public async Task<IActionResult> Edit(Order updatedOrder)
+		public async Task<IActionResult> Edit(OrderDto updatedOrderData)
 		{
 			if (ModelState.IsValid)
 			{
-				Order order = await _orderService.GetOrderByIdAsync(updatedOrder.Id);
+				Order order = await _orderService.GetOrderByIdAsync(updatedOrderData.Id);
                 if (order != null && order.State == Order.OrderStates["new"])
                 {
-                    await _orderService.EditAsync(updatedOrder);
+                    await _orderService.EditAsync(updatedOrderData);
                     return RedirectToAction("Index");
                 }
             }

@@ -54,18 +54,20 @@ namespace MajorTest.Services.OrdersService
             return indexOrderViewModel;
 		}
 
-        public async Task CreateAsync(Order newOrder)
+        public async Task CreateAsync(OrderDto newOrderData)
         {
+            var newOrder = new Order(newOrderData.Item, newOrderData.ItemSender, newOrderData.ItemReceiver,
+                newOrderData.MeetingTime, newOrderData.MeetingPlace, newOrderData.TargetAddress);
             await _db.Orders.AddAsync(newOrder);
             await _db.SaveChangesAsync();
         }
 
-        public async Task EditAsync(Order updatedOrder)
+        public async Task EditAsync(OrderDto updatedOrderData)
         {
-            if (updatedOrder != null)
+            if (updatedOrderData != null)
             { 
-                var thisOrder = await _db.Orders.FindAsync(updatedOrder.Id);
-                if (thisOrder.State == Order.OrderStates["new"])
+                Order thisOrder = await _db.Orders.FindAsync(updatedOrderData.Id);
+                if (thisOrder != null && thisOrder.State == Order.OrderStates["new"])
                 {
                     using (var transaction = _db.Database.BeginTransaction())
                     {
@@ -75,16 +77,16 @@ namespace MajorTest.Services.OrdersService
                                                                 .Include(o => o.Item)
                                                                 .Include(o => o.Courier)
                                                                 .Include(o => o.ItemReceiver)
-                                                                .FirstOrDefaultAsync(o => o.Id == updatedOrder.Id);
+                                                                .FirstOrDefaultAsync(o => o.Id == updatedOrderData.Id);
                             if (originalOrderFromDb != null)
                             {
-                                originalOrderFromDb.TargetAddress = updatedOrder.TargetAddress;
-                                originalOrderFromDb.MeetingPlace = updatedOrder.MeetingPlace;
-                                originalOrderFromDb.MeetingTime = updatedOrder.MeetingTime;
-                                originalOrderFromDb.ItemSender = updatedOrder.ItemSender;
-                                originalOrderFromDb.Item = updatedOrder.Item;
-                                originalOrderFromDb.Courier = updatedOrder.Courier;
-                                originalOrderFromDb.ItemReceiver = updatedOrder.ItemReceiver;
+                                originalOrderFromDb.TargetAddress = updatedOrderData.TargetAddress;
+                                originalOrderFromDb.MeetingPlace = updatedOrderData.MeetingPlace;
+                                originalOrderFromDb.MeetingTime = updatedOrderData.MeetingTime;
+                                originalOrderFromDb.ItemSender = updatedOrderData.ItemSender;
+                                originalOrderFromDb.Item = updatedOrderData.Item;
+                                originalOrderFromDb.Courier = updatedOrderData.Courier;
+                                originalOrderFromDb.ItemReceiver = updatedOrderData.ItemReceiver;
                                 await _db.SaveChangesAsync();
                                 await transaction.CommitAsync();
                             }
@@ -98,7 +100,7 @@ namespace MajorTest.Services.OrdersService
             }
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<Order> GetOrderByIdAsync(int? id)
         {
             return await _db.Orders.Include(o => o.Item)
                                    .Include(o => o.ItemSender)

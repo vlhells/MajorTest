@@ -158,18 +158,18 @@ namespace UnitTests
 		{
 			// Arrange:
 			var ordersService = Substitute.For<IOrdersService>();
-			Order order = new Order();
+			OrderDto orderDto = new OrderDto();
 			var controller = new OrdersController(ordersService);
 
 			// Act:
-			var result = await controller.Create(order);
+			var result = await controller.Create(orderDto);
 
 			// Assert:
 			Assert.IsType<RedirectToActionResult>(result);
 		}
 
 		[Fact]
-		public async Task GETEditReturnsOrder()
+		public async Task GETEditReturnsOrderDto()
 		{
 			// Arrange:
 			var ordersService = Substitute.For<IOrdersService>();
@@ -182,7 +182,7 @@ namespace UnitTests
 
 			// Assert:
 			var isViewResult = Assert.IsType<ViewResult>(result);
-			Assert.IsAssignableFrom<Order>(isViewResult.Model);
+			Assert.IsAssignableFrom<OrderDto>(isViewResult.Model);
 		}
 
 		[Fact]
@@ -190,12 +190,17 @@ namespace UnitTests
 		{
 			// Arrange:
 			var order = ImitateOrdersDataset().Orders.FirstOrDefault(o => o.Id == 1);
+			var orderDto = new OrderDto();
+			orderDto.Courier = order.Courier;
+			orderDto.ItemSender = order.ItemSender;
+			orderDto.ItemReceiver = order.ItemReceiver;
+			orderDto.Id = order.Id;
             var ordersService = Substitute.For<IOrdersService>();
             ordersService.GetOrderByIdAsync(order.Id).Returns(order);
             var controller = new OrdersController(ordersService);
 
 			// Act:
-			var result = await controller.Edit(order);
+			var result = await controller.Edit(orderDto);
 
 			// Assert:
 			Assert.IsType<RedirectToActionResult>(result);

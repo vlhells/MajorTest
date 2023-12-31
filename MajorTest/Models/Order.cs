@@ -29,6 +29,23 @@ namespace MajorTest.Models
 		public string TargetAddress { get; set; } = null!;
 		public string? CancellationComment { get; set; }
 
+		public Order()
+		{
+
+		}
+
+		// For Create order:
+		public Order(Item item, ItemSender itemSender, ItemReceiver ir, DateTime meetingTime,
+			string meetingPlace, string targetAddress)
+		{
+			Item = item;
+			ItemSender = itemSender;
+			ItemReceiver = ir;
+			MeetingTime = meetingTime;
+			MeetingPlace = meetingPlace;
+			TargetAddress = targetAddress;
+		}
+
 		[NotMapped]
 		public static Dictionary<string, string> OrderStates = new Dictionary<string, string>()
 		{

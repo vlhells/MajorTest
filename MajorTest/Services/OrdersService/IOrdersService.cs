@@ -23,18 +23,18 @@ namespace MajorTest.Services.OrdersService
         /// <summary>
         /// Creates an <see cref="Order"/> object in <see cref="MajorContext.Orders"/> 
         /// via Entity Framework Core abilities with info
-        /// from frontend (GET-method Create): <paramref name="newOrder"/>.
+        /// from frontend (GET-method Create): <paramref name="newOrderData"/>.
         /// </summary>
-        /// <param name="newOrder">Order object got from GET-method Create (frontend).</param>
-		public Task CreateAsync(Order newOrder);
+        /// <param name="newOrderData">OrderDto got from GET-method Create (frontend).</param>
+		public Task CreateAsync(OrderDto newOrderData);
 
         /// <summary>
         /// Updates existing <see cref="Order"/> object in <see cref="MajorContext.Orders"/> 
         /// via Entity Framework Core abilities with new data
-        /// from frontend (GET-method Create): <paramref name="updatedOrder"/>.
+        /// from frontend (GET-method Create): <paramref name="updatedOrderData"/>.
         /// </summary>
-        /// <param name="updatedOrder">Updated Order object got from GET-method Edit (frontend).</param>
-        public Task EditAsync(Order updatedOrder);
+        /// <param name="updatedOrderData">OrderDto with updated data got from GET-method Edit (frontend).</param>
+        public Task EditAsync(OrderDto updatedOrderData);
 
         /// <summary>
         /// Returns an <see cref="Order"/> object with its' internal content 
@@ -42,7 +42,7 @@ namespace MajorTest.Services.OrdersService
         /// </summary>
         /// <param name="id">The integer order identifier.</param>
         /// <returns>An <see cref="Order"/> object.</returns>
-        public Task<Order> GetOrderByIdAsync(int id);
+        public Task<Order> GetOrderByIdAsync(int? id);
 
         /// <summary>
         /// Returns a <see cref="bool"/> value by specifying an <paramref name="id"/>.
