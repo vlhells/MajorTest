@@ -2,7 +2,7 @@
     
 Запустив приложение, Вы попадете на страницу /Orders/Index.  
 На ней представлены все заявки, которые есть в базе.  
-Есть пагинация.  
+Есть пагинация. В коде контроллера страницы с курьерами настроен вывод 1 курьера на 1 стр с целью показа работы пагинации.  
     
 ![alt text](overviewScreens/OrdersIndexAll.PNG "/Orders/Index preview")  
     
@@ -11,7 +11,7 @@
     
 Также на странице /Orders/Index можно создать новую заявку:  
 ![alt text](overviewScreens/OrderCreate.PNG "/Orders/Create preview")  
-В случае ввода некорректных (пустых) данных будет BadRequest)  
+В случае ввода некорректных (пустых) данных будет ошибка BadRequest)  
     
 У заявки можно изменить статус:  
 ![alt text](overviewScreens/OrderChangeState.PNG "/Orders/ChangeState preview")  

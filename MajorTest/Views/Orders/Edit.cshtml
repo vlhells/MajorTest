@@ -12,39 +12,39 @@
     </div>
     <div class="form-group">
         <label asp-for="MeetingTime" class="control-label">Время встречи:</label>
-        <input type="datetime-local" asp-for="MeetingTime" class="form-control" />
+        <input type="datetime-local" asp-for="MeetingTime" class="form-control" required/>
     </div>
     <div class="form-group">
         <label asp-for="MeetingPlace" class="control-label">Место встречи:</label>
-        <input type="text" asp-for="MeetingPlace" class="form-control" />
+        <input type="text" asp-for="MeetingPlace" class="form-control" required/>
     </div>
     <div class="form-group">
         <label asp-for="TargetAddress" class="control-label">Целевой адрес:</label>
-        <input type="text" asp-for="TargetAddress" class="form-control" />
+        <input type="text" asp-for="TargetAddress" class="form-control" required/>
     </div>
     <div class="form-group">
         <label asp-for="Item.Description" class="control-label">Описание груза:</label>
-        <input type="text" asp-for="Item.Description" class="form-control" />
+        <input type="text" asp-for="Item.Description" class="form-control" required />
     </div>
     <div class="form-group">
         <label asp-for="Item.Weight" class="control-label">Масса груза (кг):</label>
-        <input type="number" asp-for="Item.Weight" class="form-control" step="any" />
+        <input type="number" asp-for="Item.Weight" class="form-control" step="any" required />
     </div>
     <div class="form-group">
         <label asp-for="Item.Length" class="control-label" >Длина груза (см):</label>
-        <input type="number" asp-for="Item.Length" class="form-control" step="any" />
+        <input type="number" asp-for="Item.Length" class="form-control" step="any" required />
     </div>
     <div class="form-group">
         <label asp-for="Item.Width" class="control-label" >Ширина груза (см):</label>
-        <input type="number" asp-for="Item.Width" class="form-control" step="any" />
+        <input type="number" asp-for="Item.Width" class="form-control" step="any" required />
     </div>
     <div class="form-group">
         <label asp-for="Item.Height" class="control-label" >Высота груза (см):</label>
-        <input type="number" asp-for="Item.Height" class="form-control" step="any" />
+        <input type="number" asp-for="Item.Height" class="form-control" step="any" required />
     </div>
     <div class="form-group">
         <label asp-for="ItemSender.FirstName" class="control-label">Имя отправителя:</label>
-        <input type="text" asp-for="ItemSender.FirstName" class="form-control" />
+        <input type="text" asp-for="ItemSender.FirstName" class="form-control" required/>
     </div>
     <div class="form-group">
         <label asp-for="ItemSender.SecondName" class="control-label">Отчество отправителя:</label>
@@ -52,15 +52,15 @@
     </div>
     <div class="form-group">
         <label asp-for="ItemSender.LastName" class="control-label">Фамилия отправителя:</label>
-        <input type="text" asp-for="ItemSender.LastName" class="form-control" />
+        <input type="text" asp-for="ItemSender.LastName" class="form-control" required />
     </div>
     <div class="form-group">
         <label asp-for="ItemSender.PhoneNumber" class="control-label">Контактный номер отправителя:</label>
-        <input type="tel" asp-for="ItemSender.PhoneNumber" class="form-control" />
+        <input type="tel" asp-for="ItemSender.PhoneNumber" class="form-control" required />
     </div>
     <div class="form-group">
         <label asp-for="ItemReceiver.FirstName" class="control-label">Имя получателя:</label>
-        <input type="text" asp-for="ItemReceiver.FirstName" class="form-control" />
+        <input type="text" asp-for="ItemReceiver.FirstName" class="form-control" required />
     </div>
     <div class="form-group">
         <label asp-for="ItemReceiver.SecondName" class="control-label">Отчество получателя:</label>
@@ -68,11 +68,11 @@
     </div>
     <div class="form-group">
         <label asp-for="ItemReceiver.LastName" class="control-label">Фамилия получателя:</label>
-        <input type="text" asp-for="ItemReceiver.LastName" class="form-control" />
+        <input type="text" asp-for="ItemReceiver.LastName" class="form-control" required />
     </div>
     <div class="form-group">
         <label asp-for="ItemReceiver.PhoneNumber" class="control-label">Контактный номер получателя:</label>
-        <input type="tel" asp-for="ItemReceiver.PhoneNumber" class="form-control" />
+        <input type="tel" asp-for="ItemReceiver.PhoneNumber" class="form-control" required />
     </div>
     <div class="form-group">
         <input type="submit" value="Сохранить" class="btn btn-outline-secondary" />

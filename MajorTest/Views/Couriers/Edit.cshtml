@@ -11,7 +11,7 @@
     </div>
     <div class="form-group">
         <label asp-for="FirstName" class="control-label">Имя курьера:</label>
-        <input type="text" asp-for="FirstName" class="form-control" />
+        <input type="text" asp-for="FirstName" class="form-control" required/>
     </div>
     <div class="form-group">
         <label asp-for="SecondName" class="control-label">Отчество курьера:</label>
@@ -19,11 +19,11 @@
     </div>
     <div class="form-group">
         <label asp-for="LastName" class="control-label">Фамилия курьера:</label>
-        <input type="text" asp-for="LastName" class="form-control" />
+        <input type="text" asp-for="LastName" class="form-control" required/>
     </div>
     <div class="form-group">
         <label asp-for="PhoneNumber" class="control-label">Контактный номер курьера:</label>
-        <input type="tel" asp-for="PhoneNumber" class="form-control" />
+        <input type="tel" asp-for="PhoneNumber" class="form-control" required/>
     </div>
     <div class="form-group">
         <input type="submit" value="Сохранить" class="btn btn-outline-secondary" />
